@@ -1,0 +1,82 @@
+For a shuttle tracker app with the features you've described, you'll need a database structure that can handle users (both students and drivers), buses, routes, trips, and locations. Here's a brief overview of the database structure and how to link them:
+
+1. Users Table:
+   - user_id (Primary Key)
+   - email
+   - name
+   - user_type (student or driver)
+   - google_id (for Google login)
+
+2. Buses Table:
+   - bus_id (Primary Key)
+   - bus_number
+   - capacity
+
+3. Routes Table:
+   - route_id (Primary Key)
+   - route_name
+   - start_point
+   - end_point
+
+4. Stops Table:
+   - stop_id (Primary Key)
+   - route_id (Foreign Key referencing Routes)
+   - stop_name
+   - latitude
+   - longitude
+
+5. Trips Table:
+   - trip_id (Primary Key)
+   - bus_id (Foreign Key referencing Buses)
+   - driver_id (Foreign Key referencing Users)
+   - route_id (Foreign Key referencing Routes)
+   - start_time
+   - end_time
+   - status (active, completed, cancelled)
+
+6. LocationUpdates Table:
+   - update_id (Primary Key)
+   - trip_id (Foreign Key referencing Trips)
+   - latitude
+   - longitude
+   - timestamp
+
+7. Bookings Table:
+   - booking_id (Primary Key)
+   - user_id (Foreign Key referencing Users)
+   - trip_id (Foreign Key referencing Trips)
+   - pickup_stop_id (Foreign Key referencing Stops)
+   - dropoff_stop_id (Foreign Key referencing Stops)
+   - status (booked, cancelled, completed)
+
+Relationships:
+- Users can be either students or drivers
+- Drivers are associated with Trips
+- Buses are associated with Trips
+- Routes have multiple Stops
+- Trips are associated with a Bus, Driver, and Route
+- LocationUpdates are associated with Trips
+- Bookings are associated with Users, Trips, and Stops
+
+For the React Native app:
+1. Login Screen:
+   - Implement Google Sign-In for students
+   - Implement email/password login for drivers
+
+2. Driver Flow:
+   - After login, fetch available buses from the Buses table
+   - Allow driver to select a bus, updating the Trips table
+   - Fetch routes from the Routes table for driver to choose
+   - Start trip, creating a new entry in the Trips table
+   - Periodically update driver's location in the LocationUpdates table
+
+3. Student Flow:
+   - After login, fetch available routes from the Routes table
+   - Allow student to select pickup and drop-off points from the Stops table
+   - Fetch active trips for the selected route from the Trips table
+   - Display driver's current location by querying the LocationUpdates table
+   - Allow booking, creating a new entry in the Bookings table
+
+To link the React Native app with the database, you'll need to create an API (using a backend framework like Django, Node.js with Express, or Ruby on Rails) that interfaces with your database and provides endpoints for your app to fetch and update data.
+
+Remember to implement real-time updates (using WebSockets or a similar technology) for features like tracking the driver's current location.
