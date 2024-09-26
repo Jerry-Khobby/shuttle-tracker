@@ -1,7 +1,10 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Text, Image, TouchableOpacity, SafeAreaView, useColorScheme} from 'react-native';
+
 
 const LoginScreen = () => {
+  const colorScheme= useColorScheme();
+  console.log(colorScheme);
   return (
     <SafeAreaView className="flex-1 bg-white mt-14">
       <View className="items-center justify-center space-y-8 px-6">
