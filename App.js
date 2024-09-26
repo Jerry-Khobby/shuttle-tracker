@@ -1,12 +1,14 @@
-import { StatusBar } from 'expo-status-bar';
 import {View } from 'react-native';
-import SplashScreen from './src/splash/splash';
+import LoginScreen from './src/splash/splash';
 
-export default function App() {
+const App=()=>{
   return (
-    <View>
-<SplashScreen/>
+    <View className="flex-1">
+<LoginScreen/>
     </View>
   );
 }
+
+
+export default App;
 
