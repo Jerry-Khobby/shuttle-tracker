@@ -1,10 +1,10 @@
 import {View } from 'react-native';
-import LoginScreen from './src/splash/splash';
+import DriverLogin from './src/login/login';
 
 const App=()=>{
   return (
     <View className="flex-1">
-<LoginScreen/>
+<DriverLogin/>
     </View>
   );
 }
