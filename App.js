@@ -1,9 +1,13 @@
-import {View } from 'react-native';
+/* import {View } from 'react-native'; */
+import "react-native-gesture-handler";
+import BottomTabNavigator from './routes/TabNavigation';
+import { NavigationContainer } from '@react-navigation/native';
 
 const App=()=>{
   return (
-    <View className="flex-1">
-    </View>
+    <NavigationContainer>
+      <BottomTabNavigator/>
+    </NavigationContainer>
   );
 }
 
