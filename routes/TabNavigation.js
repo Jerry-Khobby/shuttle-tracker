@@ -2,6 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons'; // Don't forget to import the icon library
 import Maps from '../src/maps/maps';
+import PickUpDropOff from '../src/routes/pickup';
 
 const Tab = createBottomTabNavigator();
 
@@ -25,11 +26,13 @@ const BottomTabNavigator = () => {
           // Return the appropriate icon
           return <Icon name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: '#458A81',
+        tabBarActiveTintColor: '#3B82F6',  // Tailwind blue-500 hex code
         tabBarInactiveTintColor: 'gray',
+        tabBarLabelStyle: { fontSize: 10 },
+      headerShown:false,
       })}
     >
-      <Tab.Screen name="Home" component={Maps} />
+      <Tab.Screen name="Home" component={PickUpDropOff} />
       <Tab.Screen name="Map" component={Maps} />
       <Tab.Screen name="Favorites" component={Maps} />
       <Tab.Screen name="Settings" component={Maps} />
