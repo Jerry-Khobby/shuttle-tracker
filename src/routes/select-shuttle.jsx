@@ -38,7 +38,9 @@ const SelectShuttle = () => {
               <Text className="text-gray-500 text-sm">route</Text>
             </View>
           </View>
-          <Text className="text-sm">5 mins</Text>
+          <View className="bg-gray-200 px-3 py-1 rounded-md">
+            <Text className="text-sm">5 mins</Text>
+          </View>
         </View>
 
         {/* Second Bus */}
@@ -53,7 +55,9 @@ const SelectShuttle = () => {
               <Text className="text-gray-500 text-sm">route</Text>
             </View>
           </View>
-          <Text className="text-sm">7 mins</Text>
+          <View className="bg-gray-200 px-3 py-1 rounded-md">
+            <Text className="text-sm">7 mins</Text>
+          </View>
         </View>
       </View>
 
