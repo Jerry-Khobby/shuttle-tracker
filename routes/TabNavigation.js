@@ -1,6 +1,7 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/Ionicons"; // Don't forget to import the icon library
+import DriversMaps from "../src/maps/drivers-maps";
 import Maps from "../src/maps/maps";
 
 const Tab = createBottomTabNavigator();
@@ -31,7 +32,7 @@ const BottomTabNavigator = () => {
         headerShown: false,
       })}
     >
-      <Tab.Screen name="Home" component={Maps} />
+      <Tab.Screen name="Home" component={DriversMaps} />
       <Tab.Screen name="Map" component={Maps} />
       <Tab.Screen name="Favorites" component={Maps} />
       <Tab.Screen name="Settings" component={Maps} />
