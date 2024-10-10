@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
-import { View, Text, Pressable, Alert } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import React, { useState } from "react";
+import { View, Text, Pressable, Alert } from "react-native";
+import Icon from "react-native-vector-icons/Ionicons";
+import { useNavigation } from "@react-navigation/native";
 
 const PickUpDropOff = () => {
+  const navigation = useNavigation();
   const [selected, setSelected] = useState(null); // Track which option is selected
 
   return (
     <View className="flex-1 bg-white items-center justify-center">
       {/* Back Arrow and Heading */}
       <View className="flex flex-row items-center justify-start w-full px-5 absolute top-10">
-        <Pressable onPress={() => Alert.alert('We are working on it')}>
+        <Pressable onPress={() => navigation.navigate("SelectRoute")}>
           <Icon name="arrow-back" size={24} color="black" />
         </Pressable>
         <Text className="text-2xl font-bold text-center flex-1">
@@ -21,9 +23,9 @@ const PickUpDropOff = () => {
       <View className="flex-col space-y-4 w-full px-5">
         {/* Pickup Pressable */}
         <Pressable
-          onPress={() => setSelected('pickup')} // Set 'pickup' as selected
+          onPress={() => navigation.navigate("SelectPickUp")} // Navigate to SelectPickUp screen
           className={`p-4 border rounded-lg items-center w-full ${
-            selected === 'pickup' ? 'bg-blue-200' : 'bg-gray-100'
+            selected === "pickup" ? "bg-blue-200" : "bg-gray-100"
           }`}
         >
           <Text className="text-center text-lg">Select PickUp</Text>
@@ -31,9 +33,9 @@ const PickUpDropOff = () => {
 
         {/* DropOff Pressable */}
         <Pressable
-          onPress={() => setSelected('dropoff')} // Set 'dropoff' as selected
+          onPress={() => navigation.navigate("DropOff")} // Navigate to DropOff screen
           className={`p-4 border rounded-lg items-center w-full ${
-            selected === 'dropoff' ? 'bg-blue-200' : 'bg-gray-100'
+            selected === "dropoff" ? "bg-blue-200" : "bg-gray-100"
           }`}
         >
           <Text className="text-center text-lg">Select DropOff</Text>
@@ -42,8 +44,8 @@ const PickUpDropOff = () => {
 
       {/* Done Button */}
       <Pressable
-        onPress={() => Alert.alert('You are Done')}
-        className="bg-blue-400 py-2 rounded-lg w-11/12 mt-4"
+        onPress={() => navigation.navigate("SelectShuttle")}
+        className="bg-blue-400 py-2 rounded-lg w-11/12 mt-4 h-12 text-center"
       >
         <Text className="text-center text-white text-lg">Done</Text>
       </Pressable>

@@ -4,6 +4,7 @@ import Icon from "react-native-vector-icons/Ionicons"; // Don't forget to import
 import DriversMaps from "../src/maps/drivers-maps";
 import Maps from "../src/maps/maps";
 import SettingsPage from "../src/settings/settings-page";
+import UsersHomeStack from "./UserHome";
 
 const Tab = createBottomTabNavigator();
 
@@ -33,9 +34,9 @@ const BottomTabNavigator = () => {
         headerShown: false,
       })}
     >
-      <Tab.Screen name="Home" component={DriversMaps} />
+      <Tab.Screen name="Home" component={UsersHomeStack} />
       <Tab.Screen name="Map" component={Maps} />
-      <Tab.Screen name="Favorites" component={Maps} />
+      <Tab.Screen name="Favorites" component={DriversMaps} />
       <Tab.Screen name="Settings" component={SettingsPage} />
     </Tab.Navigator>
   );

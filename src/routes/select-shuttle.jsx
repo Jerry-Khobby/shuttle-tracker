@@ -1,15 +1,17 @@
 import React from "react";
 import { View, Text, Pressable, Image, Alert } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+import { useNavigation } from "@react-navigation/native";
 
 const SelectShuttle = () => {
+  const navigation = useNavigation();
   return (
     <View className="flex-1 bg-white">
       {/* Header with Icon and Centered Title */}
       <View className="flex flex-row items-center justify-between w-full px-5 absolute top-10">
         {/* Back Icon */}
         <Pressable
-          onPress={() => Alert.alert("We are working on it")}
+          onPress={() => navigation.navigate("PickUpDropOff")}
           className="flex-1"
         >
           <Icon name="arrow-back" size={24} color="black" />
