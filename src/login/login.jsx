@@ -16,7 +16,7 @@ const DriverLogin = () => {
   const isDarkMode = colorScheme === "dark";
   return (
     <SafeAreaView
-      className={`flex-1 ${isDarkMode ? "bg-black" : "bg-white"} pt-10`}
+      className={`flex-1 ${isDarkMode ? "bg-[#151718]" : "bg-white"} pt-10`}
     >
       {/* Navigation Icon */}
       <TouchableOpacity

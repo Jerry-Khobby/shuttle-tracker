@@ -6,13 +6,15 @@ import {
   TouchableOpacity,
   Animated,
   ScrollView,
+  useColorScheme,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 const SelectRoute = () => {
   const navigation = useNavigation();
   const [selectedRoute, setSelectedRoute] = useState(null);
-
+  const colorScheme = useColorScheme();
+  const isDarkMode = colorScheme === "dark";
   const routes = [
     "Commercial Area to KSB 1",
     "Commercial Area to KSB 2",
@@ -47,9 +49,18 @@ const SelectRoute = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="p-5 mt-10">
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      className={`flex-1 ${isDarkMode ? "bg-[#151718]" : "bg-white"} p-5 pt-10`}
+    >
       {/* Heading */}
-      <Text className="text-2xl font-bold text-center mb-4">Select Route</Text>
+      <Text
+        className={`text-2xl font-bold text-center mb-4 ${
+          isDarkMode ? "text-white" : "text-black"
+        }`}
+      >
+        Select Route
+      </Text>
 
       {/* Route options */}
       <View className="flex-col space-y-4">
@@ -58,11 +69,21 @@ const SelectRoute = () => {
             key={index}
             onPress={() => handleRouteSelect(route, index)} // Pass index to handle animation for the specific route
             className={`p-4 border rounded-lg items-center w-full ${
-              selectedRoute === route ? "bg-blue-200" : "bg-gray-100"
+              selectedRoute === route
+                ? "bg-blue-200"
+                : isDarkMode
+                ? "bg-gray-700"
+                : "bg-gray-100"
             }`}
           >
             <Animated.View style={{ opacity: fadeAnimations[index] }}>
-              <Text className="text-lg text-center">{route}</Text>
+              <Text
+                className={`text-lg text-center ${
+                  isDarkMode ? "text-white" : "text-black"
+                }`}
+              >
+                {route}
+              </Text>
             </Animated.View>
           </Pressable>
         ))}

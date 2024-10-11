@@ -29,7 +29,7 @@ const LoginScreen = () => {
 
   return (
     <SafeAreaView
-      className={`flex-1 ${isDarkMode ? "bg-black" : "bg-white"} pt-14`}
+      className={`flex-1 ${isDarkMode ? "bg-[#151718]" : "bg-white"} pt-14`}
     >
       <View className="items-center justify-center space-y-8 px-6">
         {/* Heading */}
@@ -40,7 +40,11 @@ const LoginScreen = () => {
         {/* Logo */}
         <View className="flex items-center justify-center">
           <Image
-            source={require("../../assets/church-logo.jpg")}
+            source={
+              isDarkMode
+                ? require("../../assets/darkmode-logo.png")
+                : require("../../assets/church-logo.png")
+            }
             className="w-96 h-96"
           />
         </View>
