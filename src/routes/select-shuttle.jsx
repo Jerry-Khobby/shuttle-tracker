@@ -1,10 +1,17 @@
 import React from "react";
 import { View, Text, Pressable, Image, Alert } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import { useNavigation } from "@react-navigation/native";
+import {
+  useNavigation,
+  useTheme,
+  DarkTheme,
+  DefaultTheme,
+} from "@react-navigation/native";
+import carImage from "../../assets/car.png";
 
 const SelectShuttle = () => {
   const navigation = useNavigation();
+
   return (
     <View className="flex-1 bg-white">
       {/* Header with Icon and Centered Title */}
@@ -31,10 +38,8 @@ const SelectShuttle = () => {
         {/* First Bus */}
         <View className="flex flex-row items-center justify-between w-full">
           <View className="flex flex-row items-start space-x-3">
-            <Image
-              source={{ uri: "bus-image-url" }}
-              style={{ width: 40, height: 40 }}
-            />
+            <Image source={carImage} style={{ width: 40, height: 40 }} />
+
             <View>
               <Text className="font-bold text-lg">BusNumber</Text>
               <Text className="text-gray-500 text-sm">route</Text>
@@ -48,10 +53,8 @@ const SelectShuttle = () => {
         {/* Second Bus */}
         <View className="flex flex-row items-center justify-between w-full">
           <View className="flex flex-row items-start space-x-3">
-            <Image
-              source={{ uri: "bus-image-url" }}
-              style={{ width: 40, height: 40 }}
-            />
+            <Image source={carImage} style={{ width: 40, height: 40 }} />
+
             <View>
               <Text className="font-bold text-lg">BusNumber</Text>
               <Text className="text-gray-500 text-sm">route</Text>
@@ -66,7 +69,7 @@ const SelectShuttle = () => {
       {/* Track Button */}
       <View className="absolute bottom-10 w-full items-center">
         <Pressable
-          onPress={() => Alert.alert("Tracking")}
+          onPress={() => navigation.navigate("Map")}
           className="bg-blue-400 w-4/5 py-3 rounded-md"
         >
           <Text className="text-white font-bold text-lg text-center">
