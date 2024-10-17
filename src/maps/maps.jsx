@@ -57,13 +57,13 @@ const Maps = () => {
         }`}
       >
         {/* Navigation Arrow */}
-        <TouchableOpacity>
+        {/*         <TouchableOpacity>
           <Icon
             name="arrow-back"
             size={24}
             color={isDarkMode ? "#fff" : "#000"}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         {/* Centered Title */}
         <View className="flex-1 justify-center items-center">
           <Text
