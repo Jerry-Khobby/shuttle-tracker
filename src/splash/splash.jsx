@@ -8,8 +8,7 @@ import {
   useColorScheme,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { auth } from "../../firebase"; // Import auth from the firebase.js file
-import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
+import * as Google from "expo-auth-session/providers/google";
 
 const LoginScreen = () => {
   const navigation = useNavigation();
