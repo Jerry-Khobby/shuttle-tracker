@@ -7,10 +7,13 @@ import {
   SafeAreaView,
   useColorScheme,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native"; // Import useNavigation
+import { useNavigation } from "@react-navigation/native";
+import { auth } from "../../firebase"; // Import auth from the firebase.js file
+import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 
 const LoginScreen = () => {
-  const navigation = useNavigation(); // Use useNavigation to access the navigation object
+  const navigation = useNavigation();
+
   const GoToDriversLogin = () => {
     navigation.navigate("DriverLogin");
   };
@@ -29,9 +32,9 @@ const LoginScreen = () => {
 
   return (
     <SafeAreaView
-      className={`flex-1 ${isDarkMode ? "bg-[#151718]" : "bg-white"} pt-14`}
+      className={`flex-1 ${isDarkMode ? "bg-[#151718]" : "bg-white"} pt-20`}
     >
-      <View className="items-center justify-center space-y-8 px-6">
+      <View className="items-center justify-center space-y-8 px-6 pt-10">
         {/* Heading */}
         <Text className={`text-3xl font-bold ${headingColor}`}>
           Bus Tracker
