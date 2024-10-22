@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import * as Google from "expo-auth-session/providers/google";
+import { auth } from "../../firebase";
 
 const LoginScreen = () => {
   const navigation = useNavigation();
@@ -28,6 +29,25 @@ const LoginScreen = () => {
   useEffect(() => {
     console.log(colorScheme);
   }, [colorScheme]);
+
+  const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+    clientId: process.env.OLD_WEB_CLIENT_ID,
+  });
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    if (response?.type === "success") {
+      const { id_token } = response.params;
+      const credential = auth.GoogleAuthProvider.credential(id_token);
+      auth
+        .signInWithCredential(credential)
+        .then((userCredential) => {
+          setUser(userCredential.user);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [response]);
 
   return (
     <SafeAreaView
@@ -60,7 +80,13 @@ const LoginScreen = () => {
 
         {/* Buttons */}
         <View className="w-full space-y-4">
-          <TouchableOpacity className="bg-blue-500 py-3 rounded-md h-11">
+          <TouchableOpacity
+            className="bg-blue-500 py-3 rounded-md h-11"
+            disabled={!request}
+            onPress={() => {
+              promptAsync();
+            }}
+          >
             <Text className="text-white font-bold text-center">
               Continue with Google
             </Text>
