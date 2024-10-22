@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@expo/metro-runtime": "~3.2.3",
+    "@expo/webpack-config": "^19.0.1",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-navigation/bottom-tabs": "^6.6.1",
     "@react-navigation/native": "^6.1.18",
@@ -19,8 +20,10 @@
     "expo-auth-session": "~5.5.2",
     "expo-crypto": "~13.0.2",
     "expo-random": "~14.0.1",
+    "expo-secure-store": "^13.0.2",
     "expo-splash-screen": "~0.27.6",
     "expo-status-bar": "~1.12.1",
+    "expo-web-browser": "^13.0.3",
     "firebase": "^10.14.1",
     "nativewind": "^2.0.11",
     "postcss": "8.4.23",
