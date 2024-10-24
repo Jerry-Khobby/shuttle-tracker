@@ -21,12 +21,16 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.jerry_anku.shuttle"
-      
     },
     "web": {
       "favicon": "./assets/favicon.png",
-      "bundler":"metro"
+      "bundler": "metro"
     },
-    "scheme":"shuttle"
+    "scheme": "shuttle",
+    "extra": {
+      "eas": {
+        "projectId": "f80035be-f212-46fe-a435-cf6eef0164fb"
+      }
+    }
   }
 }
