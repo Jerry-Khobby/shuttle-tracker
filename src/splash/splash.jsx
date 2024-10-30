@@ -14,6 +14,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 WebBrowser.maybeCompleteAuthSession();
 const LoginScreen = () => {
+  const [result, setResult] = useState(null);
+
+  const _handlePressButtonAsync = async () => {
+    let result = await WebBrowser.openBrowserAsync("https://expo.dev");
+    setResult(result);
+  };
   const navigation = useNavigation();
 
   const GoToDriversLogin = () => {
@@ -63,7 +69,10 @@ const LoginScreen = () => {
 
         {/* Buttons */}
         <View className="w-full space-y-4">
-          <TouchableOpacity className="bg-blue-500 py-3 rounded-md h-11">
+          <TouchableOpacity
+            className="bg-blue-500 py-3 rounded-md h-11"
+            onPress={_handlePressButtonAsync}
+          >
             <Text className="text-white font-bold text-center">
               Continue with Google
             </Text>
