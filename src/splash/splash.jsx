@@ -14,43 +14,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 WebBrowser.maybeCompleteAuthSession();
 const LoginScreen = () => {
-  const [userInfo, setUserInfo] = useState(null);
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    androidClientId: process.env.CLIENT_ID_ANDROID,
-    iosClientId: process.env.CLIENT_ID_IOS,
-    webClientId: process.env.WEB_CLIENT_ID,
-  });
-
-  useEffect(() => {
-    handleSignInGoogleWithGoogle();
-  }, [response]);
-
-  async function handleSignInGoogleWithGoogle() {
-    const user = await AsyncStorage.getItem("@user");
-    if (!user) {
-      if (response?.type === "success") {
-        await getUserInfo(response.authentication.accessToken);
-      }
-    } else {
-      setUserInfo(JSON.parse(user));
-    }
-  }
-
-  const getUserInfo = async (token) => {
-    if (!token) return;
-    try {
-      const response = await fetch(
-        "https://www.googleapis.com/userinfo/v2/me",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      const user = await response.json();
-      await AsyncStorage.setItem("@user", JSON.stringify(user));
-    } catch (error) {
-      console.log("There was an error");
-    }
-  };
   const navigation = useNavigation();
 
   const GoToDriversLogin = () => {
@@ -100,10 +63,7 @@ const LoginScreen = () => {
 
         {/* Buttons */}
         <View className="w-full space-y-4">
-          <TouchableOpacity
-            className="bg-blue-500 py-3 rounded-md h-11"
-            onPress={() => promptAsync}
-          >
+          <TouchableOpacity className="bg-blue-500 py-3 rounded-md h-11">
             <Text className="text-white font-bold text-center">
               Continue with Google
             </Text>
