@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   useColorScheme,
   Image,
   ScrollView,
+  Alert,
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
@@ -27,12 +28,29 @@ const DriverRegistration = () => {
   const [yearsOfExperience, setYearsOfExperience] = useState("");
   const [licenseImage, setLicenseImage] = useState(null);
 
+  const [mediaPermissionStatus, requestMediaPermission] =
+    ImagePicker.useMediaLibraryPermissions();
+
   const handleImageUpload = async () => {
+    // Ensure permission has been granted, or request it
+    if (!mediaPermissionStatus?.granted) {
+      const permissionResult = await requestMediaPermission();
+      if (!permissionResult.granted) {
+        Alert.alert(
+          "Permission Required",
+          "Permission to access the media library is required to upload images.",
+          [{ text: "OK" }]
+        );
+        return;
+      }
+    }
+
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       quality: 1,
     });
+
     if (!result.canceled) {
       setLicenseImage(result.uri);
     }
@@ -84,6 +102,7 @@ const DriverRegistration = () => {
       >
         <View className="items-center justify-center space-y-8 mt-4">
           <View className="w-full space-y-4">
+            {/* TextInputs for registration details */}
             <TextInput
               className={`w-full p-4 border ${
                 isDarkMode
