@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import LoginScreen from "../src/splash/splash";
 import BottomTabNavigator from "./TabNavigation";
 import DriverLogin from "../src/login/login";
+import DriverRegistration from "../src/login/drivers-registration";
 
 const Stack = createStackNavigator();
 
@@ -15,6 +16,7 @@ const MainStackRouter = () => {
       }}
     >
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
+      <Stack.Screen name="DriverRegistration" component={DriverRegistration} />
       <Stack.Screen name="DriverLogin" component={DriverLogin} />
       <Stack.Screen name="MaintabNavigation" component={BottomTabNavigator} />
     </Stack.Navigator>

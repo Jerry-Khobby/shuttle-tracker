@@ -66,12 +66,15 @@ const DriverLogin = () => {
         {/* Buttons */}
         <View className="w-full space-y-4 flex-col">
           <TouchableOpacity
-            className="bg-blue-500 py-3 rounded-md"
+            className="bg-blue-500 py-3 rounded-md h-11"
             onPress={() => navigation.navigate("MaintabNavigation")}
           >
             <Text className="text-white font-bold text-center">Login</Text>
           </TouchableOpacity>
-          <TouchableOpacity className="bg-green-500 py-3 rounded-md">
+          <TouchableOpacity
+            className="bg-green-500 py-3 rounded-md h-11"
+            onPress={() => navigation.navigate("DriverRegistration")}
+          >
             <Text className="text-white font-bold text-center">Register</Text>
           </TouchableOpacity>
         </View>

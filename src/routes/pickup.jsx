@@ -78,7 +78,7 @@ const PickUpDropOff = () => {
       {/* Done Button */}
       <Pressable
         onPress={() => navigation.navigate("SelectShuttle")}
-        className="bg-blue-400 py-2 rounded-lg w-11/12 mt-4 h-12 text-center"
+        className="bg-blue-500 py-2 rounded-lg w-11/12 mt-4 h-12 text-center"
       >
         <Text className="text-center text-white text-lg">Done</Text>
       </Pressable>
