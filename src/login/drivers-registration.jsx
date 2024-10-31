@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -30,9 +30,22 @@ const DriverRegistration = () => {
 
   const [mediaPermissionStatus, requestMediaPermission] =
     ImagePicker.useMediaLibraryPermissions();
+  const [cameraPermissionStatus, requestCameraPermission] =
+    ImagePicker.useCameraPermissions();
+
+  const handleImageOption = async () => {
+    Alert.alert(
+      "Choose Image Source",
+      "Capture a new photo or select from gallery?",
+      [
+        { text: "Camera", onPress: handleCaptureImage },
+        { text: "Gallery", onPress: handleImageUpload },
+        { text: "Cancel", style: "cancel" },
+      ]
+    );
+  };
 
   const handleImageUpload = async () => {
-    // Ensure permission has been granted, or request it
     if (!mediaPermissionStatus?.granted) {
       const permissionResult = await requestMediaPermission();
       if (!permissionResult.granted) {
@@ -45,8 +58,31 @@ const DriverRegistration = () => {
       }
     }
 
-    let result = await ImagePicker.launchImageLibraryAsync({
+    const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setLicenseImage(result.uri);
+    }
+  };
+
+  const handleCaptureImage = async () => {
+    if (!cameraPermissionStatus?.granted) {
+      const permissionResult = await requestCameraPermission();
+      if (!permissionResult.granted) {
+        Alert.alert(
+          "Permission Required",
+          "Permission to access the camera is required to capture images.",
+          [{ text: "OK" }]
+        );
+        return;
+      }
+    }
+
+    const result = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       quality: 1,
     });
@@ -189,7 +225,7 @@ const DriverRegistration = () => {
                 borderColor: isDarkMode ? "gray" : "darkgray",
                 backgroundColor: isDarkMode ? "#3A3B3C" : "#F3F4F6",
               }}
-              onPress={handleImageUpload}
+              onPress={handleImageOption}
             >
               <Ionicons
                 name="image"
@@ -200,7 +236,7 @@ const DriverRegistration = () => {
                 className="ml-2"
                 style={{ color: isDarkMode ? "white" : "black" }}
               >
-                Upload License Image
+                Upload License image
               </Text>
             </TouchableOpacity>
             {licenseImage && (
