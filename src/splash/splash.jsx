@@ -17,8 +17,24 @@ const LoginScreen = () => {
   const [result, setResult] = useState(null);
 
   const _handlePressButtonAsync = async () => {
-    let result = await WebBrowser.openBrowserAsync("https://expo.dev");
-    setResult(result);
+    try {
+      let result = await WebBrowser.openBrowserAsync(
+        "https://shuttle-tracker-backend.onrender.com/auth/google"
+      );
+      setResult(result);
+
+      console.log(result);
+
+      if (result.type === "success" && result.url) {
+        // Optional: You could store a token or response data in AsyncStorage here
+        // AsyncStorage.setItem('authToken', 'yourToken');
+
+        // Navigate to the Home screen
+        navigation.navigate("MaintabNavigation");
+      }
+    } catch (error) {
+      console.log("Error during Google Sign-in", error);
+    }
   };
   const navigation = useNavigation();
 
@@ -33,10 +49,6 @@ const LoginScreen = () => {
   const textColor = isDarkMode ? "text-white" : "text-slate-800";
   const headingColor = isDarkMode ? "text-white" : "text-slate-800";
   const subheadingColor = isDarkMode ? "text-gray-300" : "text-slate-800";
-
-  useEffect(() => {
-    console.log(colorScheme);
-  }, [colorScheme]);
 
   return (
     <SafeAreaView
