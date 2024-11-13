@@ -18,7 +18,6 @@ const DriverRegistration = () => {
   const navigation = useNavigation();
   const colorScheme = useColorScheme();
   const isDarkMode = colorScheme === "dark";
-
   const [firstName, setFirstName] = useState("");
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
@@ -27,12 +26,10 @@ const DriverRegistration = () => {
   const [licenseNumber, setLicenseNumber] = useState("");
   const [yearsOfExperience, setYearsOfExperience] = useState("");
   const [licenseImage, setLicenseImage] = useState(null);
-
   const [mediaPermissionStatus, requestMediaPermission] =
     ImagePicker.useMediaLibraryPermissions();
   const [cameraPermissionStatus, requestCameraPermission] =
     ImagePicker.useCameraPermissions();
-
   const handleImageOption = async () => {
     Alert.alert(
       "Choose Image Source",
@@ -44,7 +41,6 @@ const DriverRegistration = () => {
       ]
     );
   };
-
   const handleImageUpload = async () => {
     if (!mediaPermissionStatus?.granted) {
       const permissionResult = await requestMediaPermission();
@@ -92,20 +88,33 @@ const DriverRegistration = () => {
     }
   };
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (password !== confirmPassword) {
       alert("Passwords do not match");
       return;
     }
-    console.log("Driver registered:", {
-      firstName,
-      surname,
-      email,
-      password,
-      licenseNumber,
-      yearsOfExperience,
-      licenseImage,
-    });
+    try {
+      let base64Image = null;
+      if (licenseImage) {
+        const response = await fetch(licenseImage);
+        const blob = await response.blob();
+        base64Image = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
+      }
+      const requestBody = {
+        firstName,
+        surname,
+        email,
+        password,
+        licenseNumber,
+        yearsOfExperience,
+        licenseImage: base64Image, //Base64-encoded image
+      };
+    } catch (error) {}
   };
 
   return (
