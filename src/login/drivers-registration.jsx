@@ -9,6 +9,7 @@ import {
   Image,
   ScrollView,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
@@ -25,6 +26,7 @@ const DriverRegistration = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [licenseNumber, setLicenseNumber] = useState("");
   const [yearsOfExperience, setYearsOfExperience] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [licenseImage, setLicenseImage] = useState(null);
   const [mediaPermissionStatus, requestMediaPermission] =
     ImagePicker.useMediaLibraryPermissions();
@@ -93,6 +95,8 @@ const DriverRegistration = () => {
       alert("Passwords do not match");
       return;
     }
+    setIsLoading(true);
+
     try {
       let base64Image = null;
       if (licenseImage) {
@@ -105,6 +109,7 @@ const DriverRegistration = () => {
           reader.readAsDataURL(blob);
         });
       }
+
       const requestBody = {
         firstName,
         surname,
@@ -112,9 +117,37 @@ const DriverRegistration = () => {
         password,
         licenseNumber,
         yearsOfExperience,
-        licenseImage: base64Image, //Base64-encoded image
+        licenseImage: base64Image, // Base64-encoded image
       };
-    } catch (error) {}
+
+      const response = await fetch(
+        "https://shuttle-tracker-backend.onrender.com/auth/signup/drivers",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
+
+      const result = await response.json();
+      if (!response.ok) {
+        // Display backend error message if available
+        const errorMessage =
+          result.error || result.message || "An error occurred";
+        Alert.alert("Error", errorMessage);
+      } else {
+        // Success response
+        Alert.alert("Success", "Driver registered successfully!");
+        navigation.navigate("OtpVerification");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      Alert.alert("Error", "Something went wrong. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -141,134 +174,142 @@ const DriverRegistration = () => {
         </Text>
       </View>
 
-      <ScrollView
-        contentContainerStyle={{ paddingBottom: 20 }}
-        className="px-6"
-      >
-        <View className="items-center justify-center space-y-8 mt-4">
-          <View className="w-full space-y-4">
-            {/* TextInputs for registration details */}
-            <TextInput
-              className={`w-full p-4 border ${
-                isDarkMode
-                  ? "border-gray-700 bg-gray-800 text-white"
-                  : "border-gray-300 bg-white text-black"
-              } rounded-md`}
-              placeholder="First Name"
-              placeholderTextColor={isDarkMode ? "gray" : "darkgray"}
-              value={firstName}
-              onChangeText={setFirstName}
-            />
-            <TextInput
-              className={`w-full p-4 border ${
-                isDarkMode
-                  ? "border-gray-700 bg-gray-800 text-white"
-                  : "border-gray-300 bg-white text-black"
-              } rounded-md`}
-              placeholder="Surname"
-              placeholderTextColor={isDarkMode ? "gray" : "darkgray"}
-              value={surname}
-              onChangeText={setSurname}
-            />
-            <TextInput
-              className={`w-full p-4 border ${
-                isDarkMode
-                  ? "border-gray-700 bg-gray-800 text-white"
-                  : "border-gray-300 bg-white text-black"
-              } rounded-md`}
-              placeholder="Email"
-              placeholderTextColor={isDarkMode ? "gray" : "darkgray"}
-              value={email}
-              onChangeText={setEmail}
-            />
-            <TextInput
-              className={`w-full p-4 border ${
-                isDarkMode
-                  ? "border-gray-700 bg-gray-800 text-white"
-                  : "border-gray-300 bg-white text-black"
-              } rounded-md`}
-              placeholder="Password"
-              placeholderTextColor={isDarkMode ? "gray" : "darkgray"}
-              secureTextEntry
-              value={password}
-              onChangeText={setPassword}
-            />
-            <TextInput
-              className={`w-full p-4 border ${
-                isDarkMode
-                  ? "border-gray-700 bg-gray-800 text-white"
-                  : "border-gray-300 bg-white text-black"
-              } rounded-md`}
-              placeholder="Confirm Password"
-              placeholderTextColor={isDarkMode ? "gray" : "darkgray"}
-              secureTextEntry
-              value={confirmPassword}
-              onChangeText={setConfirmPassword}
-            />
-            <TextInput
-              className={`w-full p-4 border ${
-                isDarkMode
-                  ? "border-gray-700 bg-gray-800 text-white"
-                  : "border-gray-300 bg-white text-black"
-              } rounded-md`}
-              placeholder="License Number"
-              placeholderTextColor={isDarkMode ? "gray" : "darkgray"}
-              value={licenseNumber}
-              onChangeText={setLicenseNumber}
-            />
-            <TextInput
-              className={`w-full p-4 border ${
-                isDarkMode
-                  ? "border-gray-700 bg-gray-800 text-white"
-                  : "border-gray-300 bg-white text-black"
-              } rounded-md`}
-              placeholder="Years of Experience"
-              placeholderTextColor={isDarkMode ? "gray" : "darkgray"}
-              keyboardType="numeric"
-              value={yearsOfExperience}
-              onChangeText={setYearsOfExperience}
-            />
-            <TouchableOpacity
-              className="p-4 border rounded-md flex-row items-center justify-center"
-              style={{
-                borderColor: isDarkMode ? "gray" : "darkgray",
-                backgroundColor: isDarkMode ? "#3A3B3C" : "#F3F4F6",
-              }}
-              onPress={handleImageOption}
-            >
-              <Ionicons
-                name="image"
-                size={24}
-                color={isDarkMode ? "white" : "black"}
+      {isLoading ? (
+        <ActivityIndicator
+          size="large"
+          color="#0000ff"
+          className="flex-1 justify-center items-center"
+        />
+      ) : (
+        <ScrollView
+          contentContainerStyle={{ paddingBottom: 20 }}
+          className="px-6"
+        >
+          <View className="items-center justify-center space-y-8 mt-4">
+            <View className="w-full space-y-4">
+              {/* TextInputs for registration details */}
+              <TextInput
+                className={`w-full p-4 border ${
+                  isDarkMode
+                    ? "border-gray-700 bg-gray-800 text-white"
+                    : "border-gray-300 bg-white text-black"
+                } rounded-md`}
+                placeholder="First Name"
+                placeholderTextColor={isDarkMode ? "gray" : "darkgray"}
+                value={firstName}
+                onChangeText={setFirstName}
               />
-              <Text
-                className="ml-2"
-                style={{ color: isDarkMode ? "white" : "black" }}
-              >
-                Upload License image
-              </Text>
-            </TouchableOpacity>
-            {licenseImage && (
-              <Image
-                source={{ uri: licenseImage }}
+              <TextInput
+                className={`w-full p-4 border ${
+                  isDarkMode
+                    ? "border-gray-700 bg-gray-800 text-white"
+                    : "border-gray-300 bg-white text-black"
+                } rounded-md`}
+                placeholder="Surname"
+                placeholderTextColor={isDarkMode ? "gray" : "darkgray"}
+                value={surname}
+                onChangeText={setSurname}
+              />
+              <TextInput
+                className={`w-full p-4 border ${
+                  isDarkMode
+                    ? "border-gray-700 bg-gray-800 text-white"
+                    : "border-gray-300 bg-white text-black"
+                } rounded-md`}
+                placeholder="Email"
+                placeholderTextColor={isDarkMode ? "gray" : "darkgray"}
+                value={email}
+                onChangeText={setEmail}
+              />
+              <TextInput
+                className={`w-full p-4 border ${
+                  isDarkMode
+                    ? "border-gray-700 bg-gray-800 text-white"
+                    : "border-gray-300 bg-white text-black"
+                } rounded-md`}
+                placeholder="Password"
+                placeholderTextColor={isDarkMode ? "gray" : "darkgray"}
+                secureTextEntry
+                value={password}
+                onChangeText={setPassword}
+              />
+              <TextInput
+                className={`w-full p-4 border ${
+                  isDarkMode
+                    ? "border-gray-700 bg-gray-800 text-white"
+                    : "border-gray-300 bg-white text-black"
+                } rounded-md`}
+                placeholder="Confirm Password"
+                placeholderTextColor={isDarkMode ? "gray" : "darkgray"}
+                secureTextEntry
+                value={confirmPassword}
+                onChangeText={setConfirmPassword}
+              />
+              <TextInput
+                className={`w-full p-4 border ${
+                  isDarkMode
+                    ? "border-gray-700 bg-gray-800 text-white"
+                    : "border-gray-300 bg-white text-black"
+                } rounded-md`}
+                placeholder="License Number"
+                placeholderTextColor={isDarkMode ? "gray" : "darkgray"}
+                value={licenseNumber}
+                onChangeText={setLicenseNumber}
+              />
+              <TextInput
+                className={`w-full p-4 border ${
+                  isDarkMode
+                    ? "border-gray-700 bg-gray-800 text-white"
+                    : "border-gray-300 bg-white text-black"
+                } rounded-md`}
+                placeholder="Years of Experience"
+                placeholderTextColor={isDarkMode ? "gray" : "darkgray"}
+                keyboardType="numeric"
+                value={yearsOfExperience}
+                onChangeText={setYearsOfExperience}
+              />
+              <TouchableOpacity
+                className="p-4 border rounded-md flex-row items-center justify-center"
                 style={{
-                  width: 100,
-                  height: 100,
-                  borderRadius: 8,
-                  marginTop: 10,
+                  borderColor: isDarkMode ? "gray" : "darkgray",
+                  backgroundColor: isDarkMode ? "#3A3B3C" : "#F3F4F6",
                 }}
-              />
-            )}
-          </View>
+                onPress={handleImageOption}
+              >
+                <Ionicons
+                  name="image"
+                  size={24}
+                  color={isDarkMode ? "white" : "black"}
+                />
+                <Text
+                  className="ml-2"
+                  style={{ color: isDarkMode ? "white" : "black" }}
+                >
+                  Upload License image
+                </Text>
+              </TouchableOpacity>
+              {licenseImage && (
+                <Image
+                  source={{ uri: licenseImage }}
+                  style={{
+                    width: 100,
+                    height: 100,
+                    borderRadius: 8,
+                    marginTop: 10,
+                  }}
+                />
+              )}
+            </View>
 
-          <TouchableOpacity
-            className="bg-blue-500 py-3 rounded-md w-full h-12"
-            onPress={handleRegister}
-          >
-            <Text className="text-white font-bold text-center">Register</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+            <TouchableOpacity
+              className="bg-blue-500 py-3 rounded-md w-full h-12 text-center"
+              onPress={handleRegister}
+            >
+              <Text className="text-white font-bold text-center">Register</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      )}
     </SafeAreaView>
   );
 };
