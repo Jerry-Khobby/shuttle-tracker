@@ -14,6 +14,7 @@ import {
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
 
 const DriverRegistration = () => {
   const navigation = useNavigation();
@@ -62,8 +63,11 @@ const DriverRegistration = () => {
       quality: 1,
     });
 
-    if (!result.canceled) {
+    if (!result.canceled && result.uri) {
+      console.log("Selected Image URI:", result.uri); // Debugging log
       setLicenseImage(result.uri);
+    } else {
+      console.log("Image selection canceled or no URI found");
     }
   };
 
@@ -85,8 +89,8 @@ const DriverRegistration = () => {
       quality: 1,
     });
 
-    if (!result.canceled) {
-      setLicenseImage(result.uri);
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      setLicenseImage(result.assets[0].uri);
     }
   };
 
@@ -100,14 +104,17 @@ const DriverRegistration = () => {
     try {
       let base64Image = null;
       if (licenseImage) {
-        const response = await fetch(licenseImage);
-        const blob = await response.blob();
-        base64Image = await new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onloadend = () => resolve(reader.result);
-          reader.onerror = reject;
-          reader.readAsDataURL(blob);
+        console.log("Reading file from URI:", licenseImage); // Debugging log
+        const base64Data = await FileSystem.readAsStringAsync(licenseImage, {
+          encoding: FileSystem.EncodingType.Base64,
         });
+        base64Image = `data:image/jpeg;base64,${base64Data}`;
+      }
+      console.log("Base64 Image:", base64Image);
+      if (!base64Image) {
+        alert("Base64 conversion failed or license image is missing");
+        console.error("Base64 conversion failed or license image is missing ");
+        return;
       }
 
       const requestBody = {
@@ -139,7 +146,10 @@ const DriverRegistration = () => {
         Alert.alert("Error", errorMessage);
       } else {
         // Success response
-        Alert.alert("Success", "Driver registered successfully!");
+        Alert.alert(
+          "Success",
+          "Driver registered successfully!,Check your Email for the verification code"
+        );
         navigation.navigate("OtpVerification");
       }
     } catch (error) {
